@@ -60,8 +60,17 @@ const authUser = expressAsyncHandler(async (req, res) => {
 })
 
 const allUsers = expressAsyncHandler(async (req, res) => {
-    const keyword = req.query
-    console.log(keyword);
+    // query for serach user or email
+    const keyword = req.query.search ? {
+        $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+        ]
+    } : {}
+    // find another user except loged in user 
+
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    res.send(users)
 })
 
 
