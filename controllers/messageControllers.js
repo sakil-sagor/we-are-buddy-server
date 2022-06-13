@@ -29,7 +29,7 @@ const sendMessage = expressAsyncHandler(async (req, res) => {
         content: content,
         chat: chatId,
     }
-    console.log(newMessage);
+
 
     try {
         var message = await Message.create(newMessage);
@@ -49,7 +49,6 @@ const sendMessage = expressAsyncHandler(async (req, res) => {
         res.json(message);
 
     } catch (error) {
-        console.log(4);
         res.status(400);
         throw new Error(error.message)
     }
